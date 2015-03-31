@@ -23,7 +23,7 @@ function! vim2hs#haskell#conceal#wide() " {{{
 
   syntax match hsStructure
     \ "\s::\_s"ms=s+1,me=e-1
-    \ display conceal cchar=⦂
+    \ display conceal cchar=∷
 
   syntax match hsOperator
     \ "\s>>\_s"ms=s+1,me=e-1
@@ -36,6 +36,10 @@ function! vim2hs#haskell#conceal#wide() " {{{
   syntax match hsKeyword
     \ "\<sum\>"
     \ display conceal cchar=∑
+
+  syntax match hsKeyword
+    \ "\<not\>"
+    \ display conceal cchar=¬
 
   syntax match hsKeyword
     \ "\<product\>"
