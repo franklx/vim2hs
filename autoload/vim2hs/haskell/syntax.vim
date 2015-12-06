@@ -64,7 +64,7 @@ function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, con
   highlight default link hsImportKeyword hsKeyword
 
   syntax match hsStructure
-    \ "[[:punct:]]\@<!\%(=\|\\\|@\|\~\)[[:punct:]]\@!"
+    \ "[[:punct:]]\@<!\%(=\|\\\|@\|\~\)\%([[:punct:]]\&[^[(]\)\@!"
     \ display
 
   if !a:conceal_wide
