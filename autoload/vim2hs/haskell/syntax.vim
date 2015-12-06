@@ -55,7 +55,7 @@ function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, con
 
   syntax match hsImport
     \ "\<import\>.*"he=s+6
-    \ contains=hsImportKeyword,hsComment,hsBlockComment
+    \ contains=hsImportKeyword,hsComment,hsBlockComment,hsDelimiter
 
   syntax match hsImportKeyword
     \ contained "\<\(as\|qualified\|hiding\)\>"
