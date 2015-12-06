@@ -1,6 +1,6 @@
 function! vim2hs#haskell#syntax#operators() " {{{
   syntax match hsOperator
-    \ '[([:blank:]]\@<=\%([[:upper:]]\k*\.\)*[-!#$%&\*\+/=\?@\\^|~:.<>]\+\ze\_[[:blank:])]'
+    \ '\%([[:upper:]]\k*\.\)*[-!#$%&\*\+/=\?@\\^|~:.<>]\+'
     \ display
 
   syntax match hsOperator
