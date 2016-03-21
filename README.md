@@ -3,6 +3,13 @@
 
 *"Vim to Haskell": A collection of vimscripts for Haskell development.*
 
+About This Fork
+-------
+
+The original repository hasn't been updated since April 2014. There are
+currently a ton of forks, each adding some amount of functionality or features.
+This repository has collected most of those forks and pull requests together.
+
 Features
 --------
 
