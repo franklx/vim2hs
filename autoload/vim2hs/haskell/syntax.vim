@@ -1,6 +1,6 @@
 function! vim2hs#haskell#syntax#operators() " {{{
   syntax match hsOperator
-    \ '\%([[:upper:]]\k*\.\)*[-!#$%&\*\+/=\?@\\^|~:.<>≈≡≠≉⊂⊆⊃⊇′″‴⁗]\+'
+    \ '\%([[:upper:]]\k*\.\)*[-!#$%&\*\+/=\?@\\^|~:.<>]\+'
     \ display
 
   syntax match hsOperator
@@ -23,7 +23,7 @@ function! vim2hs#haskell#syntax#delimiters() " {{{
 endfunction " }}}
 
 
-function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, conceal_bad) " {{{
+function! vim2hs#haskell#syntax#keywords() " {{{
   syntax case match
 
   syntax keyword hsStructure
@@ -33,12 +33,6 @@ function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, con
     \ let in do proc
 
   highlight default link hsExprKeyword hsStructure
-
-  if a:conceal_enumerations
-    syntax match hsDeriving
-      \ '\%(deriving\s*(\)\@<=.*,.*)\@='
-      \ conceal cchar=…
-  endif
 
   syntax match hsTypedef
     \ '\<\%(type\|newtype\|data\|class\|instance\|pattern\)\>'
@@ -55,7 +49,7 @@ function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, con
 
   syntax match hsImport
     \ "\<import\>.*"he=s+6
-    \ contains=hsImportKeyword,hsComment,hsBlockComment,hsDelimiter
+    \ contains=hsImportKeyword,hsComment,hsBlockComment,hsDelimiter,hsType
 
   syntax match hsImportKeyword
     \ contained "\<\(as\|qualified\|hiding\)\>"
@@ -66,18 +60,6 @@ function! vim2hs#haskell#syntax#keywords(conceal_wide, conceal_enumerations, con
   syntax match hsStructure
     \ "[[:punct:]]\@<!\%(=\|\\\|@\|\~\)\%([[:punct:]]\&[^[(]\)\@!"
     \ display
-
-  if !a:conceal_wide
-    syntax match hsStructure
-      \ "[[:punct:]]\@<!\%(->\|→\|<-\|←\|::\|∷\)[[:punct:]]\@!"
-      \ display
-  endif
-
-  if !a:conceal_bad
-    syntax match hsStructure
-      \ "[[:punct:]]\@<!\%(=>\|⇒\|-<<\?\)[[:punct:]]\@!"
-      \ display
-  endif
 
   highlight default link hsStructure Structure
   highlight default link hsTypedef Typedef
@@ -103,19 +85,27 @@ endfunction " }}}
 
 function! vim2hs#haskell#syntax#types() " {{{
   syntax match hsType
-    \ "^\(\s*\)\%(default\s\+\)\?\%(\k\+\|([^[:alnum:]]\+)\)\_s*\(::\|∷\).*\%(\n\1\s.*\)*"
+    \ "\<[[:upper:]]\k*\>"
+
+  syntax match hsTypeSig
+    \ "^\(\s*\)\%(default\s\+\)\?\%(\k\+\|([^[:alnum:]]\+)\)\_s*\(::\)"
     \ contains=TOP,@Spell
 
+  highlight default link hsTypeSig Function
   highlight default link hsType Type
 endfunction " }}}
 
+  " syntax match hsType
+  "   \ "^\(\s*\)\%(default\s\+\)\?\%(\k\+\|([^[:alnum:]]\+)\)\_s*\(::\).*\%(\n\1\s.*\)*"
+  "   \ contains=TOP,@Spell
 
 function! vim2hs#haskell#syntax#bindings() " {{{
   syntax match hsIdentifier
     \ "^\k\+\ze.*\%(\n\s.*\|\n\)*[[:punct:]]\@<!=[[:punct:]]\@!"
 
   syntax match hsIdentifierNested
-    \ "^\s\+\k\+\ze.*\%(\n\s\+|.*\|\n\s*\)*\([[:punct:]]\+\|{[^}]*\)\@<!=[[:punct:]]\@!"
+    \ "^\s\+\%(let\s\+\|where\s\+\)*\k\+\ze.*\%(\n\s\+|.*\|\n\s*\)*\([[:punct:]]\+\|{[^}]*\)\@<!=[[:punct:]]\@!"
+    \ contains=hsExprKeyword,hsStructure
 
   highlight default link hsIdentifier Identifier
   highlight default link hsIdentifierNested Identifier
@@ -189,44 +179,23 @@ function! vim2hs#haskell#syntax#strings(multiline_strings) " {{{
 endfunction " }}}
 
 
-function! vim2hs#haskell#syntax#comments(conceal_comments, conceal_enumerations) " {{{
+function! vim2hs#haskell#syntax#comments() " {{{
   syntax case match
 
   syntax keyword hsTodo
     \ TODO FIXME XXX
     \ contained
 
-  if a:conceal_comments
-    syntax match hsComment
-      \ '---*\%([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$'
-      \ contains=hsTodo,@Spell
-      \ conceal cchar=ℹ
-
-    syntax match hsComment
-      \ '^\s*---*\%([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$'
-      \ contains=hsTodo,@Spell
-  else
-    syntax match hsComment
-      \ '---*\%([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$'
-      \ contains=hsTodo,@Spell
-  endif
+  syntax match hsComment
+    \ '---*\%([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$'
+    \ contains=hsTodo,@Spell
 
   syntax region hsBlockComment
     \ start="{-" end="-}"
     \ contains=hsBlockComment,hsTodo,@Spell
 
-  if a:conceal_enumerations
-    syntax match hsLANGUAGEPragma
-      \ 'LANGUAGE\s\+\zs.*,.*\ze\s\+#-}'
-      \ contained conceal cchar=…
-
-    syntax region hsPragma
-      \ start="{-#" end="#-}"
-      \ contains=hsLANGUAGEPragma
-  else
-    syntax region hsPragma
-      \ start="{-#" end="#-}"
-  endif
+  syntax region hsPragma
+    \ start="{-#" end="#-}"
 
   highlight default link hsTodo Todo
   highlight default link hsComment Comment

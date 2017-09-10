@@ -15,11 +15,6 @@ call vim2hs#letdefault('g:haskell_sql'                  , 1)
 call vim2hs#letdefault('g:haskell_json'                 , 1)
 call vim2hs#letdefault('g:haskell_xml'                  , 1)
 call vim2hs#letdefault('g:haskell_hsp'                  , 1)
-call vim2hs#letdefault('g:haskell_conceal'              , 1)
-call vim2hs#letdefault('g:haskell_conceal_comments'     , 0)
-call vim2hs#letdefault('g:haskell_conceal_enumerations' , 1)
-call vim2hs#letdefault('g:haskell_conceal_wide'         , 0)
-call vim2hs#letdefault('g:haskell_conceal_bad'          , 0)
 call vim2hs#letdefault('g:haskell_multiline_strings'    , 0)
 
 
@@ -75,26 +70,11 @@ if g:haskell_hsp
   call vim2hs#haskell#syntax#hsp()
 endif
 
-if g:haskell_conceal
-  call vim2hs#haskell#conceal#simple()
-
-  if g:haskell_conceal_wide
-    call vim2hs#haskell#conceal#wide()
-  endif
-
-  if g:haskell_conceal_bad
-    call vim2hs#haskell#conceal#bad()
-  endif
-endif
-
 call vim2hs#haskell#syntax#numbers()
 
 call vim2hs#haskell#syntax#bindings()
 
-call vim2hs#haskell#syntax#keywords(
-  \ g:haskell_conceal && g:haskell_conceal_wide,
-  \ g:haskell_conceal && g:haskell_conceal_enumerations,
-  \ g:haskell_conceal && g:haskell_conceal_bad)
+call vim2hs#haskell#syntax#keywords()
 
 call vim2hs#haskell#syntax#types()
 
@@ -103,9 +83,7 @@ call vim2hs#haskell#syntax#folds()
 call vim2hs#haskell#syntax#strings(
   \ g:haskell_multiline_strings)
 
-call vim2hs#haskell#syntax#comments(
-  \ g:haskell_conceal && g:haskell_conceal_comments,
-  \ g:haskell_conceal && g:haskell_conceal_enumerations)
+call vim2hs#haskell#syntax#comments()
 
 if g:haskell_haddock
   call vim2hs#haskell#syntax#haddock()
