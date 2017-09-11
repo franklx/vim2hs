@@ -200,8 +200,7 @@ function! vim2hs#haskell#syntax#comments() " {{{
   highlight default link hsTodo Todo
   highlight default link hsComment Comment
   highlight default link hsBlockComment Comment
-  highlight default link hsLANGUAGEPragma PreProc
-  highlight default link hsPragma PreProc
+  highlight default link hsPragma SpecialComment
 endfunction " }}}
 
 
